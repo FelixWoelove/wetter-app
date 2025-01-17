@@ -1,0 +1,53 @@
+/* Weather.css */
+.weather-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.current-weather {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.city-name {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.temperature {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.weather-condition {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.weather-icon {
+    width: 100px;
+    height: 100px;
+}
+
+.forecast {
+    width: 100%;
+}
+
+.forecast-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.forecast-item p {
+    margin: 0;
+}
+
+.forecast-icon {
+    width: 50px;
+    height: 50px;
+}
