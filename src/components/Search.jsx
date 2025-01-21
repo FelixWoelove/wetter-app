@@ -1,26 +1,33 @@
-// components/Search.jsx
-import React, { useState } from 'react'
+import React from "react";
 
-const Search = ({ onSearch }) => {
-  const [input, setInput] = useState('')
+const Search = ({ city, setCity, language }) => {
+  const handleCityChange = (event) => {
+    setCity(event.target.value);
+  };
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    onSearch(input)
-    setInput('')
-  }
+  const handleSearch = () => {
+    if (city.trim()) {
+      alert(
+        language === "de"
+          ? `Suche nach Wetterdaten für ${city}...`
+          : `Searching for weather data in ${city}...`
+      );
+    }
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="search-form">
+    <div className="search-form">
       <input
         type="text"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Stadt suchen..."
+        value={city}
+        onChange={handleCityChange}
+        placeholder={language === "de" ? "Stadt suchen..." : "Search city..."}
       />
-      <button type="submit">Suchen</button>
-    </form>
-  )
-}
+      <button onClick={handleSearch}>
+        {language === "de" ? "Suchen" : "Search"}
+      </button>
+    </div>
+  );
+};
 
-export default Search
+export default Search;
