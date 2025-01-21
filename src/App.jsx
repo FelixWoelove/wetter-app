@@ -3,6 +3,7 @@ import Search from "./components/Search";
 import Weather from "./components/Weather";
 import "./App.css";
 
+
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [language, setLanguage] = useState("de");
@@ -19,7 +20,7 @@ const App = () => {
   return (
     <div className={`app-container ${darkMode ? "dark-mode" : ""}`}>
       <header className="app-header">
-        <h1>{language === "de" ? "Wetter-App" : "Weather App"}</h1>
+        <h1>WeatherHub</h1>
         <div className="header-controls">
           <button id="toggle-dark-mode" onClick={toggleDarkMode}>
             {darkMode
@@ -41,7 +42,7 @@ const App = () => {
         <Weather city={city} language={language} />
       </main>
       <footer className="app-footer">
-        <p>&copy; 2025 Wetter-App</p>
+        <p>&copy; 2025 WeatherHub</p>
       </footer>
     </div>
   );

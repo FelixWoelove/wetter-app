@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import "../styles/Icons.css";
+import "../styles/Weather.css";
 
 const Weather = ({ city, language }) => {
   const [weather, setWeather] = useState(null);
@@ -42,10 +44,15 @@ const Weather = ({ city, language }) => {
             {language === "de" ? "Beschreibung" : "Description"}:{" "}
             {weather.weather[0].description}
           </p>
-          <img
+          {/* <img
             src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
             alt="weather icon"
-          />
+          /> */}
+          <div className="iconContainer">
+            <div className="partly_cloudy">
+              <div className="partly_cloudy__sun"></div> <div className="partly_cloudy__cloud"></div>
+            </div>
+          </div>
         </>
       ) : (
         !error && (
