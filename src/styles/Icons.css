@@ -32,6 +32,8 @@
   .partly_cloudy__sun:after {
     content: "";
     position: absolute;
+    top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
     border-radius: 50%;
@@ -134,12 +136,13 @@
     width: 100%;
     z-index: 1;
     overflow: hidden;
-  }
-  .rainy__rain:before,
-  .thundery__rain:before {
-    content: "";
-    position: absolute;
-    height: 80%;
+    }
+    .rainy__rain:before,
+    .thundery__rain:before {
+        content: "";
+        border-radius: 0 0 8px 8px;
+        position: absolute;
+        height: 80%;
     width: 20%;
     top: 20%;
     right: 50%;
@@ -147,7 +150,7 @@
     background-image: linear-gradient(transparent, #94cdd1);
     will-change: opacity, transform;
     -webkit-animation: fadeIn 1s ease-out infinite reverse, scaleUp 1s ease-out infinite;
-            animation: fadeIn 1s ease-out infinite reverse, scaleUp 1s ease-out infinite;
+    animation: fadeIn 1s ease-out infinite reverse, scaleUp 1s ease-out infinite;
   }
   .rainy__rain:after,
   .thundery__rain:after {
@@ -156,6 +159,7 @@
     height: 60%;
     width: 20%;
     top: 40%;
+  border-radius: 0 0 8px 8px;
     right: 20%;
     z-index: 1;
     opacity: 0;

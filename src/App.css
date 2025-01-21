@@ -44,6 +44,12 @@
 .weather-container {
     text-align: center;
     margin: 20px;
+    min-width: 600px; /* Set the minimum width */
+    min-height: 600px; /* Set the minimum height */
+    
+    padding: 20px; /* Optional: Add padding for inner spacing */
+    font-size: 1.5em;
+    padding: 20px;
 }
 
 .weather-container img {
