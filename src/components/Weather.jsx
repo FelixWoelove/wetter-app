@@ -1,73 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "../styles/Icons.css";
 import "../styles/Weather.css";
 import skylineImage from "../assets/skyline.png";
 
-const Weather = ({ city, language }) => {
-  const [weather, setWeather] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const apiKey = "5bd3d97b7e5090c4891ea3a60f450ad4";
-  const apiUrl = "https://api.openweathermap.org/data/2.5/weather";
-
-  const fetchWeather = async (url) => {
-    try {
-      setLoading(true);
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(
-          language === "de" ? "Stadt nicht gefunden" : "City not found"
-        );
-      }
-      const data = await response.json();
-      setWeather(data);
-      setError(null);
-    } catch (err) {
-      setError(language === "de" ? "Stadt nicht gefunden" : "City not found");
-      setWeather(null);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchWeatherByCity = () => {
-    if (!city) return;
-    const url = `${apiUrl}?q=${city}&appid=${apiKey}&units=metric&lang=${language}`;
-    fetchWeather(url);
-  };
-  const fetchWeatherByLocation = () => {
-    if (!navigator.geolocation) {
-      setError(
-        language === "de"
-          ? "Geolocation wird nicht unterstützt."
-          : "Geolocation is not supported."
-      );
-      return;
-    }
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        const url = `${apiUrl}?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric&lang=${language}`;
-        fetchWeather(url);
-      },
-      () => {
-        setError(
-          language === "de"
-            ? "Standort nicht verfügbar."
-            : "Location not available."
-        );
-      }
-    );
-  };
-
-  useEffect(() => {
-    fetchWeatherByLocation();
-  }, []);
-
+const Weather = ({
+  city,
+  language,
+  weather,
+  loading,
+  error,
+  fetchWeatherByLocation,
+}) => {
   const wetter = weather?.weather?.[0];
 
   return (
     <div className="weather-container">
+      {loading && <p>{language === "de" ? "Lädt..." : "Loading..."}</p>}
       {error && <p>{error}</p>}
       {weather ? (
         <>
@@ -78,12 +26,8 @@ const Weather = ({ city, language }) => {
           </p>
           <p>
             {language === "de" ? "Beschreibung" : "Description"}:{" "}
-            {weather.weather[0].description}
+            {wetter?.description}
           </p>
-          {/* <img
-            src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
-            alt="weather icon"
-          /> */}
           <div className="iconContainer">
             {wetter.icon === "01d" || wetter.icon === "01n" ? (
               <div className="sunny"></div>
@@ -142,6 +86,7 @@ const Weather = ({ city, language }) => {
           </p>
         )
       )}
+     
       <div className="skyline">
         <img src={skylineImage} alt="Skyline" />
       </div>

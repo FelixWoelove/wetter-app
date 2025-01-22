@@ -1,19 +1,22 @@
 import React from "react";
 
-const Search = ({ city, setCity, language }) => {
+const Search = ({ city, setCity, language, onSearch, fetchWeatherByLocation }) => {
   const handleCityChange = (event) => {
     setCity(event.target.value);
   };
 
   const handleSearch = () => {
     if (city.trim()) {
-      alert(
-        language === "de"
-          ? `Suche nach Wetterdaten für ${city}...`
-          : `Searching for weather data in ${city}...`
-      );
+      onSearch();
+      setCity("");
     }
-  };
+  }
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      onSearch();
+    }
+  }
 
   return (
     <div className="search-form">
@@ -21,10 +24,14 @@ const Search = ({ city, setCity, language }) => {
         type="text"
         value={city}
         onChange={handleCityChange}
+        onKeyDown={handleKeyDown}
         placeholder={language === "de" ? "Stadt suchen..." : "Search city..."}
       />
       <button onClick={handleSearch}>
         {language === "de" ? "Suchen" : "Search"}
+      </button>
+      <button onClick={fetchWeatherByLocation} className="location-button">
+        {language === "de" ? "Standort verwenden" : "Use Location"}
       </button>
     </div>
   );

@@ -102,3 +102,9 @@ input[type="text"] {
   padding: 10px;
   font-size: 1em;
 }
+
+.search-form {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
