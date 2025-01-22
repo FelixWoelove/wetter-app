@@ -10,59 +10,27 @@ const Weather = ({ city, language }) => {
   const apiKey = "5bd3d97b7e5090c4891ea3a60f450ad4";
   const apiUrl = "https://api.openweathermap.org/data/2.5/weather";
 
-  const fetchWeather = async (url) => {
-    try {
-      setLoading(true);
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(
-          language === "de" ? "Stadt nicht gefunden" : "City not found"
-        );
-      }
-      const data = await response.json();
-      setWeather(data);
-      setError(null);
-    } catch (err) {
-      setError(language === "de" ? "Stadt nicht gefunden" : "City not found");
-      setWeather(null);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchWeatherByCity = () => {
-    if (!city) return;
-    const url = `${apiUrl}?q=${city}&appid=${apiKey}&units=metric&lang=${language}`;
-    fetchWeather(url);
-  };
-  const fetchWeatherByLocation = () => {
-    if (!navigator.geolocation) {
-      setError(
-        language === "de"
-          ? "Geolocation wird nicht unterstützt."
-          : "Geolocation is not supported."
-      );
-      return;
-    }
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        const url = `${apiUrl}?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric&lang=${language}`;
-        fetchWeather(url);
-      },
-      () => {
-        setError(
-          language === "de"
-            ? "Standort nicht verfügbar."
-            : "Location not available."
-        );
-      }
-    );
-  };
-
   useEffect(() => {
-    fetchWeatherByLocation();
-  }, []);
+    const fetchWeather = async () => {
+      if (!city) return;
+      try {
+        const response = await fetch(
+          `${apiUrl}?q=${city}&appid=${apiKey}&units=metric&lang=${language}`
+        );
+        if (!response.ok) {
+          throw new Error("City not found");
+        }
+        const data = await response.json();
+        setWeather(data);
+        setError(null);
+      } catch (err) {
+        setError(language === "de" ? "Stadt nicht gefunden" : "City not found");
+        setWeather(null);
+      }
+    };
+
+    fetchWeather();
+  }, [city, language]);
 
   const wetter = weather?.weather?.[0];
 
