@@ -21,6 +21,7 @@ const App = () => {
     <div className={`app-container ${darkMode ? "dark-mode" : ""}`}>
       <header className="app-header">
         <h1>WeatherHub</h1>
+            <Search city={city} setCity={setCity} language={language} />
         <div className="header-controls">
           <button id="toggle-dark-mode" onClick={toggleDarkMode}>
             {darkMode
@@ -38,7 +39,6 @@ const App = () => {
         </div>
       </header>
       <main className="app-main">
-        <Search city={city} setCity={setCity} language={language} />
         <Weather city={city} language={language} />
       </main>
       <footer className="app-footer">

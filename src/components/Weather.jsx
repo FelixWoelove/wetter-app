@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../styles/Icons.css";
 import "../styles/Weather.css";
+import skylineImage from "../assets/skyline.png";
 
 const Weather = ({ city, language }) => {
   const [weather, setWeather] = useState(null);
@@ -108,6 +109,9 @@ const Weather = ({ city, language }) => {
           </p>
         )
       )}
+      <div className="skyline">
+        <img src={skylineImage} alt="Skyline" />
+      </div>
     </div>
   );
 };
