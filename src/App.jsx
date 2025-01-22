@@ -81,7 +81,7 @@ const App = () => {
   return (
     <div className={`app-container ${darkMode ? "dark-mode" : ""}`}>
       <header className="app-header">
-        <h1>WeatherHub</h1>
+        <h1>WeatherHub24</h1>
         <Search
           city={city}
           setCity={setCity}
@@ -121,7 +121,7 @@ const App = () => {
         />
       </main>
       <footer className="app-footer">
-        <p>&copy; 2025 WeatherHub</p>
+        <p>&copy; 2025 WeatherHub24</p>
       </footer>
     </div>
   );
