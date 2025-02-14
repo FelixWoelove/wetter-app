@@ -120,6 +120,14 @@ input[type="text"] {
     width: 30px;
     height: 30px;
   }
+  header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  input{
+    width: 100%;
+  }
 }
 
 /* responsive design - tablet */
