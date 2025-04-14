@@ -1,94 +1,92 @@
-import React from "react";
-import "../styles/Icons.css";
-import "../styles/Weather.css";
-import skylineImage from "../assets/skyline.png";
+import React from 'react';
 
-const Weather = ({
-  city,
-  language,
-  weather,
-  loading,
-  error,
-  fetchWeatherByLocation,
-}) => {
-  const wetter = weather?.weather?.[0];
+const Weather = ({ weather, language, onAddToFavorites }) => {
+  if (!weather) return null;
+
+  const {
+    name,
+    main: { temp, feels_like, humidity, pressure },
+    wind: { speed },
+    weather: [{ description, icon }],
+    sys: { country }
+  } = weather;
+
+  // Format temperature values
+  const formatTemp = (temperature) => 
+    `${Math.round(temperature)}°C`;
+
+  // Get time with timezone offset
+  const currentTime = new Date().toLocaleTimeString(
+    language === 'de' ? 'de-DE' : 'en-US',
+    { hour: '2-digit', minute: '2-digit' }
+  );
+
+  // Translations
+  const translations = {
+    feelsLike: language === 'de' ? 'Gefühlt wie' : 'Feels like',
+    humidity: language === 'de' ? 'Luftfeuchtigkeit' : 'Humidity',
+    pressure: language === 'de' ? 'Luftdruck' : 'Pressure',
+    wind: language === 'de' ? 'Wind' : 'Wind',
+    addToFavorites: language === 'de' ? 'Zu Favoriten hinzufügen' : 'Add to Favorites',
+    updatedAt: language === 'de' ? 'Aktualisiert um' : 'Updated at',
+  };
 
   return (
     <div className="weather-container">
-      {loading && <p>{language === "de" ? "Lädt..." : "Loading..."}</p>}
-      {error && <p>{error}</p>}
-      {weather ? (
-        <>
-          <h2>{weather.name}</h2>
-          <p>
-            {language === "de" ? "Temperatur" : "Temperature"}:{" "}
-            {weather.main.temp}°C
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
+        <div>
+          <h2 className="text-2xl font-bold flex items-center gap-2">
+            {name}, {country}
+            <img
+              src={`https://flagsapi.com/${country}/flat/24.png`}
+              alt={`${country} flag`}
+              className="inline ml-2"
+            />
+          </h2>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            {translations.updatedAt} {currentTime}
           </p>
-          <p>
-            {language === "de" ? "Beschreibung" : "Description"}:{" "}
-            {wetter?.description}
-          </p>
-          <div className="iconContainer">
-            {wetter.icon === "01d" || wetter.icon === "01n" ? (
-              <div className="sunny"></div>
-            ) : null}
-            {wetter.icon === "02d" || wetter.icon === "02n" ? (
-              <div class="partly_cloudy">
-                <div class="partly_cloudy__sun"></div>
-                <div class="partly_cloudy__cloud"></div>
-              </div>
-            ) : null}
-            {wetter.icon === "03d" || wetter.icon === "03n" ? (
-              <div className="cloudy"></div>
-            ) : null}
-            {wetter.icon === "04d" || wetter.icon === "04n" ? (
-              <div className="cloudy"></div>
-            ) : null}
-            {wetter.icon === "09d" || wetter.icon === "09n" ? (
-              <div className="rainy">
-                <div class="rainy__cloud"></div>
-                <div class="rainy__rain"></div>
-              </div>
-            ) : null}
-            {wetter.icon === "10d" || wetter.icon === "10n" ? (
-              <div className="rainy">
-                <div class="rainy__cloud"></div>
-                <div class="rainy__rain"></div>
-              </div>
-            ) : null}
-            {wetter.icon === "11d" || wetter.icon === "11n" ? (
-              <div class="thundery">
-                <div class="thundery__cloud"></div>
-                <div class="thundery__rain"></div>
-              </div>
-            ) : null}
+        </div>
+        <button
+          onClick={onAddToFavorites}
+          className="mt-2 md:mt-0 px-3 py-1 bg-yellow-600 hover:bg-yellow-500 text-white"
+          aria-label={translations.addToFavorites}
+        >
+          ★ {translations.addToFavorites}
+        </button>
+      </div>
 
-            {wetter.icon === "13d" || wetter.icon === "13n" ? (
-              <img
-                src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
-                alt="weather icon"
-              />
-            ) : null}
-            {wetter.icon === "50d" || wetter.icon === "50n" ? (
-              <img
-                src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
-                alt="weather icon"
-              />
-            ) : null}
+      <div className="weather-details">
+        <div className="flex items-center">
+          <img
+            src={`https://openweathermap.org/img/wn/${icon}@2x.png`}
+            alt={description}
+            className="w-24 h-24"
+          />
+          <div>
+            <p className="text-4xl font-bold">{formatTemp(temp)}</p>
+            <p className="capitalize text-gray-700 dark:text-gray-300">{description}</p>
           </div>
-        </>
-      ) : (
-        !error && (
-          <p>
-            {language === "de"
-              ? "Bitte eine Stadt auswählen."
-              : "Please select a city."}
-          </p>
-        )
-      )}
-     
-      <div className="skyline">
-        <img src={skylineImage} alt="Skyline" />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 mt-4 md:mt-0">
+          <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
+            <p className="text-sm text-gray-600 dark:text-gray-400">{translations.feelsLike}</p>
+            <p className="font-semibold">{formatTemp(feels_like)}</p>
+          </div>
+          <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
+            <p className="text-sm text-gray-600 dark:text-gray-400">{translations.humidity}</p>
+            <p className="font-semibold">{humidity}%</p>
+          </div>
+          <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
+            <p className="text-sm text-gray-600 dark:text-gray-400">{translations.pressure}</p>
+            <p className="font-semibold">{pressure} hPa</p>
+          </div>
+          <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
+            <p className="text-sm text-gray-600 dark:text-gray-400">{translations.wind}</p>
+            <p className="font-semibold">{speed} m/s</p>
+          </div>
+        </div>
       </div>
     </div>
   );
