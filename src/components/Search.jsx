@@ -10,28 +10,45 @@ const Search = ({ city, setCity, language, onSearch, fetchWeatherByLocation }) =
       onSearch();
       setCity("");
     }
-  }
+  };
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      onSearch();
+      handleSearch();
     }
-  }
+  };
+
+  const placeholderText = language === "de" ? "Stadt eingeben..." : "Enter city name...";
+  const searchButtonText = language === "de" ? "Suchen" : "Search";
+  const locationButtonText = language === "de" ? "Aktuellen Standort verwenden" : "Use Current Location";
 
   return (
-    <div className="search-form">
+    <div className="search-form" role="search">
+      <label htmlFor="city-search" className="sr-only">
+        {placeholderText}
+      </label>
       <input
+        id="city-search"
         type="text"
         value={city}
         onChange={handleCityChange}
         onKeyDown={handleKeyDown}
-        placeholder={language === "de" ? "Stadt suchen..." : "Search city..."}
+        placeholder={placeholderText}
+        aria-label={placeholderText}
       />
-      <button onClick={handleSearch}>
-        {language === "de" ? "Suchen" : "Search"}
+      <button 
+        onClick={handleSearch}
+        aria-label={searchButtonText}
+        disabled={!city.trim()}
+      >
+        {searchButtonText}
       </button>
-      <button onClick={fetchWeatherByLocation} className="location-button">
-        {language === "de" ? "Standort verwenden" : "Use Location"}
+      <button 
+        onClick={fetchWeatherByLocation} 
+        className="location-button"
+        aria-label={locationButtonText}
+      >
+        {locationButtonText}
       </button>
     </div>
   );
