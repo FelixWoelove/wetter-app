@@ -9,11 +9,23 @@
 .current-weather {
     text-align: center;
     margin-bottom: 20px;
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.dark-mode .current-weather {
+    background-color: rgba(30, 41, 59, 0.7);
 }
 
 .city-name {
     font-size: 2em;
     margin-bottom: 10px;
+    font-weight: bold;
 }
 
 .temperature {
@@ -24,13 +36,78 @@
 .weather-condition {
     font-size: 1.2em;
     margin-bottom: 10px;
+    text-transform: capitalize;
 }
 
+/* Main weather icon container */
 .weather-icon {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 15px;
+    position: relative;
 }
 
+.weather-icon-size {
+    transform: scale(1.2);
+}
+
+.forecast-icon-size {
+    transform: scale(0.5);
+}
+
+/* Icon wrapper for any context */
+.icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+/* Icon container classes */
+.icon-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.small-icon-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0.8);
+}
+
+.icon-wrapper.small-icon-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0.9); /* Adjust the overall scale */
+}
+
+/* Make sure icons are visible in small containers */
+.icon-wrapper.small-icon-container .partly_cloudy,
+.icon-wrapper.small-icon-container .rainy,
+.icon-wrapper.small-icon-container .thundery,
+.icon-wrapper.small-icon-container .sunny,
+.icon-wrapper.small-icon-container .cloudy {
+    transform: scale(0.7);
+}
+
+/* Standard forecast items */
 .forecast {
     width: 100%;
 }
@@ -50,4 +127,143 @@
 .forecast-icon {
     width: 50px;
     height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Fix favorites icons styling */
+.favorites .forecast-icon {
+    width: 36px;
+    height: 36px;
+    min-width: 36px; /* Prevent shrinking */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-left: 8px; /* Add some space between temp and icon */
+}
+
+.favorites .forecast-icon-size {
+    transform: scale(0.45); /* Adjust the icon scale */
+}
+
+/* Ensure the nested elements in weather icons display correctly */
+.favorites .partly_cloudy, 
+.favorites .rainy, 
+.favorites .thundery, 
+.favorites .sunny, 
+.favorites .cloudy {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+/* Add hover effect to favorite items */
+.favorite-item {
+    border-left: 3px solid transparent;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.favorite-item:hover {
+    border-left-color: #3b82f6;
+    transform: translateX(2px);
+}
+
+/* Make the favorites section more appealing */
+.favorites {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.dark-mode .favorites {
+    background-color: rgba(30, 41, 59, 0.7);
+}
+
+.favorites-list {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 5px;
+    scrollbar-width: thin;
+}
+
+.favorites-list::-webkit-scrollbar {
+    width: 5px;
+}
+
+.favorites-list::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 10px;
+}
+
+.dark-mode .favorites-list::-webkit-scrollbar-thumb {
+    background-color: #475569;
+}
+
+/* Add some styling for the favorite button */
+.favorite-btn {
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-top: 5px;
+}
+
+.favorite-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.favorite-btn:active {
+    transform: translateY(0);
+}
+
+/* Explicit flex layouts for favorites */
+.favorites .flex.items-center.justify-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.favorites .flex.items-center {
+    display: flex;
+    align-items: center;
+}
+
+/* Make sure the trash icon is visible */
+.favorites button svg {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    vertical-align: middle;
+}
+
+.favorites .delete-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    width: 24px;
+    background-color: rgba(254, 226, 226, 0.5);
+    transition: all 0.2s ease;
+}
+
+.dark-mode .favorites .delete-btn {
+    background-color: rgba(127, 29, 29, 0.2);
+}
+
+.favorites .delete-btn:hover {
+    background-color: rgba(254, 202, 202, 0.7);
+}
+
+.dark-mode .favorites .delete-btn:hover {
+    background-color: rgba(127, 29, 29, 0.3);
 }

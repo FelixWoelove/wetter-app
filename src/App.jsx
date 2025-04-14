@@ -197,6 +197,7 @@ const App = () => {
               language={language}
               onFavoriteClick={fetchWeatherByCity}
               onFavoriteRemove={removeFromFavorites}
+              apiKey={apiKey}
             />
           </div>
         </div>
