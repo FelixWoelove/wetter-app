@@ -1,5 +1,12 @@
+@tailwind utilities;
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
