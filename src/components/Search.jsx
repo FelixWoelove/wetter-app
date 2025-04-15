@@ -1,56 +1,44 @@
-import React from "react";
+import React from 'react';
 
 const Search = ({ city, setCity, language, onSearch, fetchWeatherByLocation }) => {
-  const handleCityChange = (event) => {
-    setCity(event.target.value);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSearch();
   };
 
-  const handleSearch = () => {
-    if (city.trim()) {
-      onSearch();
-      setCity("");
-    }
+  const handleLocationClick = () => {
+    fetchWeatherByLocation();
   };
-
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      handleSearch();
-    }
-  };
-
-  const placeholderText = language === "de" ? "Stadt eingeben..." : "Enter city name...";
-  const searchButtonText = language === "de" ? "Suchen" : "Search";
-  const locationButtonText = language === "de" ? "Aktuellen Standort verwenden" : "Use Current Location";
 
   return (
-    <div className="search-form" role="search">
-      <label htmlFor="city-search" className="sr-only">
-        {placeholderText}
-      </label>
-      <input
-        id="city-search"
-        type="text"
-        value={city}
-        onChange={handleCityChange}
-        onKeyDown={handleKeyDown}
-        placeholder={placeholderText}
-        aria-label={placeholderText}
-      />
+    <form className="search-form" onSubmit={handleSubmit}>
+      <div className="search-input-wrapper">
+        <input
+          type="text"
+          className="search-input"
+          placeholder={language === "de" ? "Stadt suchen..." : "Search for a city..."}
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          aria-label={language === "de" ? "Stadt eingeben" : "Enter city"}
+        />
+        <button 
+          type="submit" 
+          className="search-button"
+          aria-label={language === "de" ? "Suchen" : "Search"}
+        >
+          <i className="fas fa-search"></i>
+        </button>
+      </div>
       <button 
-        onClick={handleSearch}
-        aria-label={searchButtonText}
-        disabled={!city.trim()}
-      >
-        {searchButtonText}
-      </button>
-      <button 
-        onClick={fetchWeatherByLocation} 
+        type="button" 
         className="location-button"
-        aria-label={locationButtonText}
+        onClick={handleLocationClick}
+        aria-label={language === "de" ? "Aktuellen Standort verwenden" : "Use current location"}
       >
-        {locationButtonText}
+        <i className="fas fa-location-arrow location-icon"></i>
+        <span>{language === "de" ? "Aktueller Standort" : "Current Location"}</span>
       </button>
-    </div>
+    </form>
   );
 };
 

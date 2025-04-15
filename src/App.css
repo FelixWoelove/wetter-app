@@ -1,289 +1,977 @@
-/* App.css - Without @apply directives */
-.app-container {
-  min-height: 100vh;
-  background-color: rgb(243, 244, 246);
-  color: rgb(17, 24, 39);
-  transition-property: color, background-color;
-  transition-duration: 300ms;
+/* Base Styles */
+:root {
+  --primary-color: #1e88e5;
+  --primary-dark: #1565c0;
+  --accent-color: #ffc107;
+  --text-light: #f5f5f5;
+  --text-dark: #333333;
+  --background-light: #f5f7fa;
+  --background-dark: #1a202c;
+  --card-light: #ffffff;
+  --card-dark: #2d3748;
+  --sidebar-light: #ffffff;
+  --sidebar-dark: #252c38;
+  --border-light: #e2e8f0;
+  --border-dark: #4a5568;
+  --success: #48bb78;
+  --warning: #ed8936;
+  --danger: #e53e3e;
+  --sidebar-width: 270px;
+  --navbar-height: 70px;
+  --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-dark: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --radius: 8px;
+  --transition: all 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Dashboard Layout */
+.dashboard {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--background-light);
+  color: var(--text-dark);
+  transition: var(--transition);
+}
+
+.dashboard.dark-mode {
+  background-color: var(--background-dark);
+  color: var(--text-light);
+}
+
+/* Sidebar Styling - Fix animation stretching */
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100%;
+  background-color: var(--sidebar-light);
+  box-shadow: var(--shadow-light);
   display: flex;
   flex-direction: column;
+  transition: var(--transition);
+  position: relative;
+  z-index: 100;
+  border-right: 1px solid var(--border-light);
+  overflow: hidden; /* Prevent content overflow during animation */
+  transform-origin: left center; /* Ensure transform originates from left side */
 }
 
-.dark-mode {
-  background-color: rgb(17, 24, 39);
-  color: rgb(243, 244, 246);
+.dark-mode .sidebar {
+  background-color: var(--sidebar-dark);
+  box-shadow: var(--shadow-dark);
+  border-right: 1px solid var(--border-dark);
 }
 
-.app-header {
-  background-color: rgb(14, 165, 233);
-  padding: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  transition-property: color, background-color;
-  transition-duration: 300ms;
+.sidebar-header {
+  padding: 20px;
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-light);
 }
 
-@media (min-width: 768px) {
-  .app-header {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
+.dark-mode .sidebar-header {
+  border-bottom: 1px solid var(--border-dark);
 }
 
-.dark-mode .app-header {
-  background-color: rgb(7, 89, 133);
-}
-
-.app-header h1 {
-  font-size: 1.5rem;
-  line-height: 2rem;
+.sidebar-header h1 {
+  font-size: 1.3rem;
   font-weight: 700;
-  color: white;
+  color: var(--primary-color);
 }
 
-@media (min-width: 768px) {
-  .app-header h1 {
-    font-size: 1.875rem;
-    line-height: 2.25rem;
-  }
+.dark-mode .sidebar-header h1 {
+  color: var(--accent-color);
 }
 
-.header-controls {
+.logo-icon {
+  width: 36px;
+  height: 36px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
   align-items: center;
   justify-content: center;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 50%;
 }
 
-@media (min-width: 768px) {
-  .header-controls {
-    justify-content: flex-end;
-  }
+.sidebar-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
 }
 
-.app-main {
-  flex-grow: 1;
-  padding: 1rem;
-  max-width: 80rem;
-  margin-left: auto;
-  margin-right: auto;
+.sidebar-footer {
+  padding: 16px;
+  border-top: 1px solid var(--border-light);
+}
+
+.dark-mode .sidebar-footer {
+  border-top: 1px solid var(--border-dark);
+}
+
+.btn-theme {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   width: 100%;
+  padding: 10px 16px;
+  background-color: var(--card-light);
+  color: var(--text-dark);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
 }
 
-@media (min-width: 768px) {
-  .app-main {
-    padding: 1.5rem;
-  }
+.dark-mode .btn-theme {
+  background-color: var(--card-dark);
+  color: var(--text-light);
+  border: 1px solid var(--border-dark);
 }
 
-.app-footer {
-  padding: 1rem;
+/* Main Content Area */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Top Navigation Bar - Cleaned Up */
+.top-navbar {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  background-color: var(--card-light);
+  box-shadow: var(--shadow-light);
+  z-index: 10;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.dark-mode .top-navbar {
+  background-color: var(--card-dark);
+  box-shadow: var(--shadow-dark);
+  border-bottom: 1px solid var(--border-dark);
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  width: 35%;
+}
+
+.nav-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  background-color: rgb(229, 231, 235);
-  transition-property: color, background-color;
-  transition-duration: 300ms;
+  width: 30%;
 }
 
-.dark-mode .app-footer {
-  background-color: rgb(31, 41, 55);
-}
-
-button {
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  background-color: rgb(3, 105, 161);
-  color: white;
-  border-radius: 0.375rem;
-  transition-property: background-color;
-  transition-duration: 200ms;
-}
-
-button:hover {
-  background-color: rgb(2, 132, 199);
-}
-
-button:focus {
-  outline: none;
-  --ring-color: rgb(14, 165, 233);
-  --ring-offset-width: 2px;
-  box-shadow: 0 0 0 var(--ring-offset-width) var(--ring-color);
-}
-
-.dark-mode button {
-  background-color: rgb(2, 132, 199);
-}
-
-.dark-mode button:hover {
-  background-color: rgb(14, 165, 233);
-}
-
-select {
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  border-width: 1px;
-  border-radius: 0.375rem;
-  background-color: white;
-  color: rgb(31, 41, 55);
-  border-color: rgb(209, 213, 219);
-}
-
-.dark-mode select {
-  background-color: rgb(55, 65, 81);
-  color: white;
-  border-color: rgb(75, 85, 99);
-}
-
-select:focus {
-  outline: none;
-  --ring-color: rgb(14, 165, 233);
-  --ring-offset-width: 2px;
-  box-shadow: 0 0 0 var(--ring-offset-width) var(--ring-color);
-}
-
-.search-form {
+.nav-controls {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
   align-items: center;
-  justify-content: center;
-  width: 100%;
+  justify-content: flex-end;
+  gap: 16px;
+  width: 35%;
 }
 
-@media (min-width: 768px) {
-  .search-form {
-    justify-content: flex-start;
+.nav-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 2px;
+  color: var(--primary-color);
+}
+
+.dark-mode .nav-title {
+  color: var(--accent-color);
+}
+
+.nav-date {
+  font-size: 0.75rem;
+  color: #718096;
+  white-space: nowrap;
+}
+
+.dark-mode .nav-date {
+  color: #a0aec0;
+}
+
+.search-container {
+  width: 100%;
+  max-width: 300px;
+}
+
+.language-select {
+  padding: 6px 10px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-light);
+  background-color: var(--card-light);
+  color: var(--text-dark);
+  font-size: 0.85rem;
+}
+
+.dark-mode .language-select {
+  background-color: var(--card-dark);
+  border: 1px solid var(--border-dark);
+  color: var(--text-light);
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: var(--radius);
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.user-greeting {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Responsive styles for navigation */
+@media (max-width: 1024px) {
+  .top-navbar {
+    padding: 0 20px;
+  }
+  
+  .nav-left, .nav-center, .nav-controls {
     width: auto;
   }
-}
-
-.search-form input {
-  padding: 0.5rem 1rem;
-  border-width: 1px;
-  border-radius: 0.375rem;
-  border-color: rgb(209, 213, 219);
-  background-color: white;
-  color: rgb(17, 24, 39);
-  width: 100%;
-}
-
-.dark-mode .search-form input {
-  border-color: rgb(75, 85, 99);
-  background-color: rgb(55, 65, 81);
-  color: white;
-}
-
-@media (min-width: 768px) {
-  .search-form input {
-    width: 16rem;
+  
+  .nav-center {
+    flex: 1;
+    margin: 0 10px;
   }
 }
 
-.search-form input:focus {
-  outline: none;
-  --ring-color: rgb(14, 165, 233);
-  --ring-offset-width: 2px;
-  box-shadow: 0 0 0 var(--ring-offset-width) var(--ring-color);
+@media (max-width: 768px) {
+  .top-navbar {
+    height: auto;
+    flex-direction: column;
+    padding: 12px 15px;
+    gap: 12px;
+  }
+  
+  .nav-left, .nav-center, .nav-controls {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .nav-left {
+    order: 2;
+  }
+  
+  .nav-center {
+    order: 1;
+  }
+  
+  .nav-controls {
+    order: 3;
+    justify-content: center;
+  }
+  
+  .search-container {
+    max-width: none;
+  }
 }
 
-.location-button {
-  background-color: rgb(13, 148, 136);
+/* Dashboard Content */
+.dashboard-content {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
 }
 
-.location-button:hover {
-  background-color: rgb(20, 184, 166);
+/* Weather Cards */
+.weather-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
 }
 
-.dark-mode .location-button {
-  background-color: rgb(15, 118, 110);
+.main-weather-card {
+  grid-column: span 2;
 }
 
-.dark-mode .location-button:hover {
-  background-color: rgb(13, 148, 136);
+.card {
+  background-color: var(--card-light);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-light);
+  padding: 24px;
+  transition: var(--transition);
+  border: 1px solid var(--border-light);
 }
 
-.favorites {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  transition-property: color, background-color;
-  transition-duration: 300ms;
+.dark-mode .card {
+  background-color: var(--card-dark);
+  box-shadow: var(--shadow-dark);
+  border: 1px solid var(--border-dark);
 }
 
-.dark-mode .favorites {
-  background-color: rgb(31, 41, 55);
-}
-
-.favorites h2 {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
+.weather-details-card h3, .sun-card h3 {
+  margin-bottom: 16px;
+  font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
 }
 
-.favorites ul {
-  list-style-type: disc;
-  padding-left: 1.25rem;
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 16px;
 }
 
-.weather-container {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  transition-property: color, background-color;
-  transition-duration: 300ms;
+.detail-item {
+  display: flex;
+  flex-direction: column;
 }
 
-.dark-mode .weather-container {
-  background-color: rgb(31, 41, 55);
+.detail-label {
+  font-size: 0.85rem;
+  color: #718096;
+  margin-bottom: 4px;
+}
+
+.dark-mode .detail-label {
+  color: #a0aec0;
+}
+
+.detail-value {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.sun-times {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.sun-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.sun-item i {
+  font-size: 1.5rem;
+  color: var(--accent-color);
+}
+
+/* Weather placeholders and states */
+.weather-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  gap: 20px;
+  color: #718096;
+}
+
+.dark-mode .weather-placeholder {
+  color: #a0aec0;
+}
+
+.placeholder-icon {
+  font-size: 3rem;
+  color: var(--primary-color);
+  opacity: 0.6;
 }
 
 .weather-loading {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  padding: 2rem;
-  color: rgb(107, 114, 128);
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 20px;
 }
 
-.dark-mode .weather-loading {
-  color: rgb(156, 163, 175);
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 3px solid var(--primary-color);
+  animation: spin 1s linear infinite;
+}
+
+.dark-mode .loading-spinner {
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top: 3px solid var(--primary-color);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .weather-error {
-  padding: 1rem;
-  color: rgb(239, 68, 68);
-  background-color: rgb(254, 226, 226);
-  border-radius: 0.375rem;
+  padding: 20px;
+  background-color: rgba(229, 62, 62, 0.1);
+  border-left: 4px solid var(--danger);
+  color: var(--danger);
+  border-radius: var(--radius);
 }
 
-.dark-mode .weather-error {
-  background-color: rgba(127, 29, 29, 0.3);
+/* Dashboard Footer */
+.dashboard-footer {
+  padding: 16px 30px;
+  text-align: center;
+  border-top: 1px solid var(--border-light);
+  font-size: 0.8rem;
+  color: #718096;
 }
 
-.weather-details {
+.dark-mode .dashboard-footer {
+  border-top: 1px solid var(--border-dark);
+  color: #a0aec0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .weather-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .main-weather-card {
+    grid-column: span 1;
+  }
+
+  .top-navbar {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 15px 20px;
+    gap: 10px;
+  }
+  
+  .nav-left, .nav-center, .nav-controls {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .nav-left {
+    order: 2;
+  }
+  
+  .nav-center {
+    order: 1;
+    margin-bottom: 10px;
+  }
+  
+  .nav-controls {
+    order: 3;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: -100%;
+    width: 240px;
+  }
+  
+  .sidebar.open {
+    left: 0;
+  }
+  
+  .search-container {
+    width: 80%;
+  }
+  
+  .dashboard-content {
+    padding: 20px;
+  }
+}
+
+/* Make sure to add FontAwesome Icons in your HTML head */
+
+
+/* Add these search styles to your existing CSS file */
+
+.search-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  width: 100%;
+  gap: 8px;
 }
 
-@media (min-width: 768px) {
-  .weather-details {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 40px 10px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-light);
+  background-color: var(--card-light);
+  color: var(--text-dark);
+  font-size: 0.9rem;
+  transition: var(--transition);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.dark-mode .search-input {
+  background-color: var(--card-dark);
+  border: 1px solid var(--border-dark);
+  color: var(--text-light);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.3);
+}
+
+.dark-mode .search-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.5);
+}
+
+.search-button {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+
+.search-button:hover {
+  color: var(--primary-dark);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.location-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: var(--transition);
+}
+
+.location-button:hover {
+  background-color: rgba(30, 136, 229, 0.1);
+  transform: translateY(-2px);
+}
+
+.dark-mode .location-button {
+  color: var(--accent-color);
+  border: 1px solid var(--accent-color);
+}
+
+.dark-mode .location-button:hover {
+  background-color: rgba(255, 193, 7, 0.1);
+}
+
+.location-icon {
+  animation: pulse-location 2s infinite;
+}
+
+@keyframes pulse-location {
+  0% {
+    transform: scale(1);
   }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+/* Add these new animation styles to your existing CSS file */
+
+/* Weather icon animations */
+.weather-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
+  position: relative;
+}
+
+.weather-animated-icon {
+  font-size: 5rem;
+  display: block;
+}
+
+/* Sun rotation animation */
+.rotating-sun {
+  animation: rotate 20s linear infinite;
+  color: #ffa726;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Moon glow animation */
+.glowing-moon {
+  animation: glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+  to { text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 216, 53, 0.6); }
+}
+
+/* Cloud floating animation */
+.floating-cloud, .floating-clouds {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Rain animation */
+.raining {
+  position: relative;
+  animation: shake 3s ease-in-out infinite;
+}
+
+.raining:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 15px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.7) 100%
+  );
+  animation: rain 1s linear infinite;
+  bottom: -20px;
+  opacity: 0.7;
+}
+
+@keyframes rain {
+  0% { transform: translateY(-10px); opacity: 0; }
+  50% { opacity: 0.7; }
+  100% { transform: translateY(10px); opacity: 0; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+/* Lightning animation */
+.lightning {
+  animation: lightning 5s linear infinite;
+}
+
+@keyframes lightning {
+  0%, 95%, 100% { 
+    color: #fdd835;
+    text-shadow: none; 
+  }
+  97% { 
+    color: white;
+    text-shadow: 0 0 30px #fff, 0 0 40px #fdd835;
+  }
+}
+
+/* Snow animation */
+.snowing {
+  position: relative;
+  animation: float-slow 4s ease-in-out infinite;
+}
+
+.snowing:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.8) 20%,
+    transparent 30%
+  ) 0 0/10px 10px;
+  animation: snow 3s linear infinite;
+  bottom: -30px;
+  opacity: 0.7;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(5deg); }
+}
+
+@keyframes snow {
+  0% { background-position: 0 0; opacity: 0; }
+  50% { opacity: 0.7; }
+  100% { background-position: 10px 20px; opacity: 0; }
+}
+
+/* Mist animation */
+.pulsing-mist {
+  animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 0.4; }
+}
+
+/* Sunrise animation */
+.animated-sun {
+  color: #ff9800;
+  animation: rise 5s ease-in-out infinite alternate;
+}
+
+@keyframes rise {
+  0% { transform: translateY(5px); opacity: 0.8; }
+  100% { transform: translateY(-5px); opacity: 1; text-shadow: 0 0 20px rgba(255, 152, 0, 0.7); }
+}
+
+/* Moon animation */
+.animated-moon {
+  color: #fdd835;
+  animation: moon-glow 4s ease-in-out infinite alternate;
+}
+
+@keyframes moon-glow {
+  0% { opacity: 0.7; text-shadow: 0 0 5px rgba(253, 216, 53, 0.3); }
+  100% { opacity: 1; text-shadow: 0 0 15px rgba(253, 216, 53, 0.7); }
+}
+
+/* Animated placeholder icon */
+.animated-icon {
+  animation: pulse-rotate 6s ease-in-out infinite;
+}
+
+@keyframes pulse-rotate {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.1) rotate(15deg); }
+}
+
+/* Enhanced UI elements */
+.btn-favorite {
+  background: none;
+  border: none;
+  color: #e57373;
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.btn-favorite:hover {
+  transform: scale(1.2);
+  color: #f44336;
+}
+
+.weather-main {
+  display: flex;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.weather-icon-container {
+  margin-right: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.weather-info {
+  flex: 1;
+}
+
+.weather-temp {
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.weather-desc {
+  font-size: 1.5rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  margin-bottom: 0.5rem;
+}
+
+.weather-feels-like {
+  font-size: 1rem;
+  color: #718096;
+}
+
+.dark-mode .weather-feels-like {
+  color: #a0aec0;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .weather-main {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .weather-icon-container {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Style improvements for cards */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-light);
+}
+
+.dark-mode .card:hover {
+  box-shadow: var(--shadow-dark);
+}
+
+/* Add these at the end of your CSS file */
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.8s ease-in;
+}
+
+.fade-in-left {
+  animation: fadeInLeft 0.6s ease-out;
+}
+
+.slide-in-top {
+  animation: slideInTop 0.5s ease-out;
+}
+
+.bounce-in {
+  animation: bounceIn 0.8s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Fixed sidebar animation */
+.fade-in-left {
+  animation: fixedFadeInLeft 0.6s ease-out;
+}
+
+@keyframes fixedFadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Ensure favorites are displayed properly in sidebar */
+.sidebar-favorites {
+  margin-top: 20px;
+  overflow-y: auto;
+  max-height: 50vh;
+}
+
+.favorite-item {
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  animation: fadeIn 0.5s;
+}
+
+.favorite-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

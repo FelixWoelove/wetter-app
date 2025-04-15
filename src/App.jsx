@@ -1,211 +1,89 @@
-import React, { useState, useEffect } from "react";
-import Search from "./components/Search";
+import React, { useEffect, useState } from "react";
+import Navbar from "./components/Layout/Navbar";
+import Sidebar from "./components/Layout/Sidebar";
 import Weather from "./components/Weather";
-import Favorites from "./components/Favorites";
+// Import from the hooks index file
+import { useWeather, useFavorites, useSettings } from "./hooks";
 import "./App.css";
+import "./styles/Icons.css"; // Import the Icons CSS file
 
 const App = () => {
-  const [darkMode, setDarkMode] = useState(() => {
-    // Check preferred color scheme or saved preference
-    return localStorage.getItem("darkMode") === "true" || 
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
-  });
-  const [language, setLanguage] = useState(() => 
-    localStorage.getItem("language") || "en"
-  );
-  const [city, setCity] = useState("");
-  const [weather, setWeather] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [favorites, setFavorites] = useState(() => {
-    try {
-      const saved = localStorage.getItem("favorites");
-      return saved ? JSON.parse(saved) : [];
-    } catch (e) {
-      return [];
-    }
-  });
+  const { darkMode, language, toggleDarkMode, changeLanguage } = useSettings();
+  const { city, setCity, weather, error, loading, fetchWeatherByCity, fetchWeatherByLocation } = useWeather(language);
+  const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
+  const [sidebarAnimated, setSidebarAnimated] = React.useState(false);
 
   const apiKey = import.meta.env.VITE_API_KEY;
-  const apiUrl = "https://api.openweathermap.org/data/2.5/weather";
 
-  useEffect(() => {
-    // Save preferences to localStorage
-    localStorage.setItem("darkMode", darkMode);
-    localStorage.setItem("language", language);
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-  }, [darkMode, language, favorites]);
-
-  const fetchWeather = async (url) => {
-    try {
-      setLoading(true);
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(
-          language === "de" ? "Stadt nicht gefunden" : "City not found"
-        );
-      }
-      const data = await response.json();
-      setWeather(data);
-      setError(null);
-    } catch (err) {
-      setError(language === "de" ? "Stadt nicht gefunden" : "City not found");
-      setWeather(null);
-    } finally {
-      setLoading(false);
+  // Ensure weather data is correctly added to favorites
+  const handleAddToFavorites = () => {
+    if (weather && weather.name) {
+      // Make sure all required data is present
+      const favoriteData = {
+        id: weather.id,
+        name: weather.name,
+        country: weather.sys?.country || '',
+        temp: weather.main?.temp,
+        weather: weather.weather?.[0] || { id: 800, main: "Clear", description: "clear sky" }
+      };
+      
+      addToFavorites(favoriteData);
     }
   };
 
-  const fetchWeatherByCity = (cityName = city) => {
-    if (!cityName) return;
-    const url = `${apiUrl}?q=${cityName}&appid=${apiKey}&units=metric&lang=${language}`;
-    fetchWeather(url);
-  };
-
-  const fetchWeatherByLocation = () => {
-    if (!navigator.geolocation) {
-      setError(
-        language === "de"
-          ? "Geolokalisierung wird nicht unterstützt"
-          : "Geolocation is not supported"
-      );
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        const url = `${apiUrl}?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric&lang=${language}`;
-        fetchWeather(url);
-      },
-      () => {
-        setError(
-          language === "de"
-            ? "Standortzugriff wurde verweigert"
-            : "Location access was denied"
-        );
-      }
-    );
-  };
-
-  const addToFavorites = (cityName) => {
-    if (!cityName || favorites.includes(cityName)) return;
-    setFavorites([...favorites, cityName]);
-  };
-
-  const removeFromFavorites = (index) => {
-    const updated = [...favorites];
-    updated.splice(index, 1);
-    setFavorites(updated);
-  };
-
+  // Delay sidebar animation to prevent stretching
   useEffect(() => {
-    // Fetch weather on language change for current displayed weather
-    if (weather?.name) {
-      fetchWeatherByCity(weather.name);
-    }
-  }, [language]);
-
-  useEffect(() => {
-    // Initial weather fetch on load
-    fetchWeatherByLocation();
+    const timer = setTimeout(() => {
+      setSidebarAnimated(true);
+    }, 100);
+    return () => clearTimeout(timer);
   }, []);
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
-
-  const changeLanguage = (event) => {
-    setLanguage(event.target.value);
-  };
-
-  const darkModeText = darkMode
-    ? language === "de" ? "Heller Modus" : "Light Mode"
-    : language === "de" ? "Dunkler Modus" : "Dark Mode";
-
   return (
-    <div className={`app-container ${darkMode ? "dark-mode" : ""}`}>
-      <header className="app-header">
-        <h1>WeatherHub24</h1>
-        <Search
-          city={city}
-          setCity={setCity}
-          language={language}
-          onSearch={() => fetchWeatherByCity()}
-          fetchWeatherByLocation={fetchWeatherByLocation}
+    <div className={`dashboard ${darkMode ? "dark-mode" : "light-mode"}`}>
+      {/* Sidebar Component with controlled animation */}
+      <div className={`sidebar ${sidebarAnimated ? 'fade-in-left' : ''}`}>
+        <Sidebar 
+          favorites={favorites} 
+          language={language} 
+          darkMode={darkMode} 
+          toggleDarkMode={toggleDarkMode} 
+          fetchWeatherByCity={fetchWeatherByCity} 
+          removeFromFavorites={removeFromFavorites}
+          apiKey={apiKey}
         />
-        <div className="header-controls">
-          <button 
-            id="toggle-dark-mode" 
-            onClick={toggleDarkMode}
-            aria-pressed={darkMode}
-          >
-            {darkModeText}
-          </button>
-          <select
-            id="language-select"
-            value={language}
-            onChange={changeLanguage}
-            aria-label={language === "de" ? "Sprache wählen" : "Select language"}
-          >
-            <option value="de">Deutsch</option>
-            <option value="en">English</option>
-          </select>
+      </div>
+
+      {/* Main Content */}
+      <div className="main-content">
+        {/* Navbar Component with slide-in animation */}
+        <Navbar 
+          city={city} 
+          setCity={setCity} 
+          language={language} 
+          changeLanguage={changeLanguage} 
+          fetchWeatherByCity={fetchWeatherByCity} 
+          fetchWeatherByLocation={fetchWeatherByLocation}
+          className="slide-in-top" 
+        />
+
+        {/* Dashboard Content */}
+        <div className="dashboard-content fade-in">
+          <Weather 
+            weather={weather} 
+            loading={loading} 
+            error={error} 
+            language={language}
+            onAddFavorite={handleAddToFavorites}
+            className="bounce-in"
+          />
         </div>
-      </header>
-      
-      <main className="app-main">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            {weather && !error && (
-              <Weather
-                language={language}
-                weather={weather}
-                loading={loading}
-                error={error}
-                onAddToFavorites={() => addToFavorites(weather.name)}
-              />
-            )}
-            
-            {error && (
-              <div className="weather-error" role="alert">
-                <p>{error}</p>
-              </div>
-            )}
-            
-            {loading && (
-              <div className="weather-loading">
-                <p>{language === "de" ? "Lädt..." : "Loading..."}</p>
-              </div>
-            )}
-            
-            {!weather && !error && !loading && (
-              <div className="weather-container">
-                <p className="text-center text-gray-500">
-                  {language === "de" 
-                    ? "Suchen Sie nach einer Stadt oder verwenden Sie Ihren Standort, um das Wetter anzuzeigen."
-                    : "Search for a city or use your location to display weather information."
-                  }
-                </p>
-              </div>
-            )}
-          </div>
-          
-          <div>
-            <Favorites 
-              favorites={favorites} 
-              language={language}
-              onFavoriteClick={fetchWeatherByCity}
-              onFavoriteRemove={removeFromFavorites}
-              apiKey={apiKey}
-            />
-          </div>
-        </div>
-      </main>
-      
-      <footer className="app-footer">
-        <p>&copy; {new Date().getFullYear()} WeatherHub24</p>
-      </footer>
+
+        {/* Dashboard Footer */}
+        <footer className="dashboard-footer fade-in">
+          <p>© {new Date().getFullYear()} WeatherHub24. {language === "de" ? "Alle Rechte vorbehalten." : "All rights reserved."}</p>
+        </footer>
+      </div>
     </div>
   );
 };

@@ -1,84 +1,77 @@
 import React from 'react';
-import '../styles/Icons.css';
 
-const WeatherIcon = ({ condition, size = "large" }) => {
-  // Map OpenWeatherMap conditions to our icon classes
-  const getIconClass = () => {
-    // Convert condition to lowercase for easier matching
-    const weatherCondition = condition?.toLowerCase() || '';
+const WeatherIcon = ({ iconCode, description }) => {
+  // Map OpenWeatherMap icon codes to FontAwesome icons and animation classes
+  const getIconConfig = (code) => {
+    // First two characters of the code represent the weather condition
+    // Last character is 'd' for day or 'n' for night
+    const condition = code.substring(0, 2);
+    const isDay = code.charAt(2) === 'd';
     
-    if (weatherCondition.includes('thunderstorm') || weatherCondition.includes('thunder')) {
-      return 'thundery';
-    } else if (weatherCondition.includes('rain') || weatherCondition.includes('drizzle')) {
-      return 'rainy';
-    } else if (weatherCondition.includes('snow') || weatherCondition.includes('sleet') || 
-               weatherCondition.includes('hail')) {
-      return 'rainy'; // Use rainy for snow (could be extended with a snow animation)
-    } else if (weatherCondition.includes('mist') || weatherCondition.includes('fog') || 
-               weatherCondition.includes('haze') || weatherCondition.includes('dust') || 
-               weatherCondition.includes('smoke')) {
-      return 'cloudy';
-    } else if (weatherCondition.includes('clear')) {
-      return 'sunny';
-    } else if (weatherCondition.includes('cloud') || weatherCondition.includes('overcast')) {
-      if (weatherCondition.includes('few') || weatherCondition.includes('scattered')) {
-        return 'partly_cloudy';
-      } else {
-        return 'cloudy';
+    // Map of conditions to icons and animation classes
+    const iconMap = {
+      '01': { // clear sky
+        icon: isDay ? 'sun' : 'moon',
+        animation: isDay ? 'rotating-sun' : 'glowing-moon',
+        color: isDay ? '#ffa726' : '#fdd835'
+      },
+      '02': { // few clouds
+        icon: isDay ? 'cloud-sun' : 'cloud-moon',
+        animation: 'floating-cloud',
+        color: isDay ? '#90a4ae' : '#78909c'
+      },
+      '03': { // scattered clouds
+        icon: 'cloud',
+        animation: 'floating-cloud',
+        color: '#90a4ae'
+      },
+      '04': { // broken clouds
+        icon: 'clouds',
+        animation: 'floating-clouds',
+        color: '#78909c'
+      },
+      '09': { // shower rain
+        icon: 'cloud-showers-heavy',
+        animation: 'raining',
+        color: '#546e7a'
+      },
+      '10': { // rain
+        icon: isDay ? 'cloud-sun-rain' : 'cloud-moon-rain',
+        animation: 'raining',
+        color: '#546e7a'
+      },
+      '11': { // thunderstorm
+        icon: 'bolt',
+        animation: 'lightning',
+        color: '#fdd835'
+      },
+      '13': { // snow
+        icon: 'snowflake',
+        animation: 'snowing',
+        color: '#e0e0e0'
+      },
+      '50': { // mist
+        icon: 'smog',
+        animation: 'pulsing-mist',
+        color: '#b0bec5'
       }
-    }
-    
-    // Default icon if no match
-    return 'partly_cloudy';
+    };
+
+    return iconMap[condition] || {
+      icon: 'cloud',
+      animation: 'floating-cloud',
+      color: '#90a4ae'
+    };
   };
 
-  const iconClass = getIconClass();
-  const sizeClass = size === 'small' ? 'forecast-icon-size' : 'weather-icon-size';
-  
-  // Use the proper container class based on size
-  const containerClass = size === 'small' ? 'small-icon-container' : 'icon-container';
-
-  // Render the animated icon based on the weather condition
-  const renderIcon = () => {
-    switch(iconClass) {
-      case 'sunny':
-        return <div className={`sunny ${sizeClass}`}></div>;
-      case 'cloudy':
-        return <div className={`cloudy ${sizeClass}`}></div>;
-      case 'partly_cloudy':
-        return (
-          <div className={`partly_cloudy ${sizeClass}`}>
-            <div className="partly_cloudy__sun"></div>
-            <div className="partly_cloudy__cloud"></div>
-          </div>
-        );
-      case 'rainy':
-        return (
-          <div className={`rainy ${sizeClass}`}>
-            <div className="rainy__cloud"></div>
-            <div className="rainy__rain"></div>
-          </div>
-        );
-      case 'thundery':
-        return (
-          <div className={`thundery ${sizeClass}`}>
-            <div className="thundery__cloud"></div>
-            <div className="thundery__rain"></div>
-          </div>
-        );
-      default:
-        return (
-          <div className={`partly_cloudy ${sizeClass}`}>
-            <div className="partly_cloudy__sun"></div>
-            <div className="partly_cloudy__cloud"></div>
-          </div>
-        );
-    }
-  };
+  const iconConfig = getIconConfig(iconCode);
 
   return (
-    <div className={`icon-wrapper ${containerClass}`}>
-      {renderIcon()}
+    <div className="weather-icon-wrapper" aria-label={description}>
+      <i 
+        className={`fas fa-${iconConfig.icon} weather-animated-icon ${iconConfig.animation}`}
+        style={{ color: iconConfig.color }}
+      ></i>
     </div>
   );
 };
