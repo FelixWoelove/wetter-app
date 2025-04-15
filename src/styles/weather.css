@@ -1,0 +1,245 @@
+@import './variables.css';
+
+/* Weather Cards */
+.weather-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
+.main-weather-card {
+  grid-column: span 2;
+}
+
+.card {
+  background-color: var(--card-light);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-light);
+  padding: 24px;
+  transition: var(--transition);
+  border: 1px solid var(--border-light);
+}
+
+.dark-mode .card {
+  background-color: var(--card-dark);
+  box-shadow: var(--shadow-dark);
+  border: 1px solid var(--border-dark);
+}
+
+.weather-details-card h3, .sun-card h3 {
+  margin-bottom: 16px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 16px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-label {
+  font-size: 0.85rem;
+  color: #718096;
+  margin-bottom: 4px;
+}
+
+.dark-mode .detail-label {
+  color: #a0aec0;
+}
+
+.detail-value {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.sun-times {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.sun-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.sun-item i {
+  font-size: 1.5rem;
+  color: var(--accent-color);
+}
+
+/* Weather UI elements */
+.weather-main {
+  display: flex;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.weather-icon-container {
+  margin-right: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.weather-info {
+  flex: 1;
+}
+
+.weather-temp {
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.weather-desc {
+  font-size: 1.5rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  margin-bottom: 0.5rem;
+}
+
+.weather-feels-like {
+  font-size: 1rem;
+  color: #718096;
+}
+
+.dark-mode .weather-feels-like {
+  color: #a0aec0;
+}
+
+/* State displays */
+.weather-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  gap: 20px;
+  color: #718096;
+}
+
+.dark-mode .weather-placeholder {
+  color: #a0aec0;
+}
+
+.placeholder-icon {
+  font-size: 3rem;
+  color: var(--primary-color);
+  opacity: 0.6;
+}
+
+.weather-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 20px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 3px solid var(--primary-color);
+  animation: spin 1s linear infinite;
+}
+
+.dark-mode .loading-spinner {
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top: 3px solid var(--primary-color);
+}
+
+.weather-error {
+  padding: 20px;
+  background-color: rgba(229, 62, 62, 0.1);
+  border-left: 4px solid var(--danger);
+  color: var(--danger);
+  border-radius: var(--radius);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .weather-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .main-weather-card {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .weather-main {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .weather-icon-container {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Card hover effects */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-light);
+}
+
+.dark-mode .card:hover {
+  box-shadow: var(--shadow-dark);
+}
+
+/* Button styles */
+.btn-favorite {
+  background: none;
+  border: none;
+  color: #e57373;
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.btn-favorite:hover {
+  transform: scale(1.2);
+  color: #f44336;
+}
+
+/* btn-theme */
+.btn-theme {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 16px;
+  background-color: var(--card-light);
+  color: var(--text-dark);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.dark-mode .btn-theme {
+  background-color: var(--card-dark);
+  color: var(--text-light);
+  border: 1px solid var(--border-dark);
+}

@@ -12,18 +12,6 @@ const Navbar = ({
   return (
     <nav className="top-navbar">
       <div className="nav-left">
-        <div className="search-container">
-          <Search
-            city={city}
-            setCity={setCity}
-            language={language}
-            onSearch={() => fetchWeatherByCity()}
-            fetchWeatherByLocation={fetchWeatherByLocation}
-          />
-        </div>
-      </div>
-      
-      <div className="nav-center">
         <h2 className="nav-title">
           {language === "de" ? "Wetter Dashboard" : "Weather Dashboard"}
         </h2>
@@ -33,6 +21,26 @@ const Navbar = ({
             { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }
           )}
         </p>
+      </div>
+      
+      <div className="nav-center">
+        <div className="search-location-container">
+          <Search
+            city={city}
+            setCity={setCity}
+            language={language}
+            onSearch={() => fetchWeatherByCity()}
+          />
+          <button 
+            type="button" 
+            className="location-button"
+            onClick={fetchWeatherByLocation}
+            aria-label={language === "de" ? "Aktuellen Standort verwenden" : "Use current location"}
+          >
+            <i className="fas fa-location-arrow location-icon"></i>
+            <span>{language === "de" ? "Standort" : "Location"}</span>
+          </button>
+        </div>
       </div>
       
       <div className="nav-controls">

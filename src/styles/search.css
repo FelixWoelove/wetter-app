@@ -1,0 +1,108 @@
+@import './variables.css';
+
+.search-location-container {
+  display: flex;
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+}
+
+.search-container {
+  width: 100%;
+  max-width: 300px;
+}
+
+.search-form {
+  position: relative;
+  flex: 1;
+  display: flex;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 35px 10px 15px;
+  border-radius: var(--radius) 0 0 var(--radius);
+  border: 1px solid var(--border-light);
+  border-right: none;
+  background-color: var(--card-light);
+  color: var(--text-dark);
+  font-size: 1rem;
+  height: 44px;
+}
+
+.dark-mode .search-input {
+  background-color: var(--card-dark);
+  border: 1px solid var(--border-dark);
+  color: var(--text-light);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.search-button {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  font-size: 0.9rem;
+  z-index: 2;
+}
+
+.location-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 15px;
+  height: 44px;
+  background-color: var(--primary-color);
+  color: white;
+  border: 1px solid var(--primary-color);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: background-color 0.3s;
+}
+
+.location-button:hover {
+  background-color: var(--primary-dark);
+}
+
+.dark-mode .location-button {
+  background-color: var(--primary-dark);
+  border: 1px solid var(--primary-dark);
+}
+
+.location-button span {
+  display: none;
+}
+
+@media (min-width: 500px) {
+  .location-button span {
+    display: inline;
+  }
+}
+
+.location-icon {
+  animation: pulse-location 2s infinite;
+}
+
+@keyframes pulse-location {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+@media (max-width: 768px) {
+  .search-container {
+    max-width: none;
+    width: 80%;
+  }
+}

@@ -151,9 +151,9 @@ body {
   overflow: hidden;
 }
 
-/* Top Navigation Bar - Cleaned Up */
+/* Top Navigation Bar - Updated Layout */
 .top-navbar {
-  height: 60px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -172,16 +172,16 @@ body {
 
 .nav-left {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
   width: 35%;
 }
 
 .nav-center {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
   width: 30%;
 }
 
@@ -194,7 +194,7 @@ body {
 }
 
 .nav-title {
-  font-size: 1.1rem;
+  font-size: 1.25rem; /* Increased from 1.1rem */
   font-weight: 600;
   margin-bottom: 2px;
   color: var(--primary-color);
@@ -205,7 +205,7 @@ body {
 }
 
 .nav-date {
-  font-size: 0.75rem;
+  font-size: 0.85rem; /* Increased from 0.75rem */
   color: #718096;
   white-space: nowrap;
 }
@@ -214,44 +214,108 @@ body {
   color: #a0aec0;
 }
 
-.search-container {
+/* Search elements updated for larger navbar */
+.search-location-container {
+  display: flex;
   width: 100%;
-  max-width: 300px;
+  max-width: 450px; /* Increased from 400px */
+  position: relative;
 }
 
-.language-select {
-  padding: 6px 10px;
-  border-radius: var(--radius);
+.search-form {
+  position: relative;
+  flex: 1;
+  display: flex;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 35px 10px 15px; /* Increased padding */
+  border-radius: var(--radius) 0 0 var(--radius);
   border: 1px solid var(--border-light);
+  border-right: none;
   background-color: var(--card-light);
   color: var(--text-dark);
-  font-size: 0.85rem;
+  font-size: 1rem; /* Increased from 0.9rem */
+  height: 44px; /* Increased from 38px */
 }
 
-.dark-mode .language-select {
+.dark-mode .search-input {
   background-color: var(--card-dark);
   border: 1px solid var(--border-dark);
   color: var(--text-light);
 }
 
-.user-profile {
-  display: flex;
-  align-items: center;
-  padding: 6px 10px;
-  border-radius: var(--radius);
-  background-color: var(--primary-color);
-  color: white;
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
 }
 
-.user-greeting {
-  font-size: 0.85rem;
-  font-weight: 500;
+.search-button {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  font-size: 0.9rem;
+  z-index: 2;
+}
+
+.location-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 15px; /* Increased padding */
+  height: 44px; /* Increased from 38px */
+  background-color: var(--primary-color);
+  color: white;
+  border: 1px solid var(--primary-color);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  cursor: pointer;
+  font-size: 0.9rem; /* Increased from 0.85rem */
+  white-space: nowrap;
+  transition: background-color 0.3s;
+}
+
+.location-button:hover {
+  background-color: var(--primary-dark);
+}
+
+.dark-mode .location-button {
+  background-color: var(--primary-dark);
+  border: 1px solid var(--primary-dark);
+}
+
+.location-button span {
+  display: none;
+}
+
+@media (min-width: 500px) {
+  .location-button span {
+    display: inline;
+  }
+}
+
+.location-icon {
+  animation: pulse-location 2s infinite;
+}
+
+@keyframes pulse-location {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
 }
 
 /* Responsive styles for navigation */
 @media (max-width: 1024px) {
   .top-navbar {
-    padding: 0 20px;
+    height: auto;
+    min-height: 80px;
+    padding: 15px 20px;
   }
   
   .nav-left, .nav-center, .nav-controls {
@@ -278,11 +342,12 @@ body {
   }
   
   .nav-left {
-    order: 2;
+    order: 1;
+    align-items: center;
   }
   
   .nav-center {
-    order: 1;
+    order: 2;
   }
   
   .nav-controls {
@@ -290,7 +355,8 @@ body {
     justify-content: center;
   }
   
-  .search-container {
+  .search-location-container {
+    width: 100%;
     max-width: none;
   }
 }
@@ -510,49 +576,41 @@ body {
 /* Make sure to add FontAwesome Icons in your HTML head */
 
 
-/* Add these search styles to your existing CSS file */
-
-.search-form {
+/* ----- Search and Location Styles ----- */
+.search-location-container {
   display: flex;
-  flex-direction: column;
   width: 100%;
-  gap: 8px;
+  max-width: 450px; /* Increased from 400px */
+  position: relative;
 }
 
-.search-input-wrapper {
+.search-form {
   position: relative;
+  flex: 1;
   display: flex;
-  width: 100%;
 }
 
 .search-input {
   width: 100%;
-  padding: 10px 40px 10px 16px;
-  border-radius: var(--radius);
+  padding: 10px 35px 10px 15px; /* Increased padding */
+  border-radius: var(--radius) 0 0 var(--radius);
   border: 1px solid var(--border-light);
+  border-right: none;
   background-color: var(--card-light);
   color: var(--text-dark);
-  font-size: 0.9rem;
-  transition: var(--transition);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  font-size: 1rem; /* Increased from 0.9rem */
+  height: 44px; /* Increased from 38px */
 }
 
 .dark-mode .search-input {
   background-color: var(--card-dark);
   border: 1px solid var(--border-dark);
   color: var(--text-light);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .search-input:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.3);
-}
-
-.dark-mode .search-input:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.5);
 }
 
 .search-button {
@@ -565,41 +623,43 @@ body {
   color: var(--primary-color);
   cursor: pointer;
   font-size: 0.9rem;
-  transition: var(--transition);
-}
-
-.search-button:hover {
-  color: var(--primary-dark);
-  transform: translateY(-50%) scale(1.1);
+  z-index: 2;
 }
 
 .location-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 8px 12px;
-  background-color: transparent;
-  color: var(--primary-color);
+  gap: 6px;
+  padding: 0 15px; /* Increased padding */
+  height: 44px; /* Increased from 38px */
+  background-color: var(--primary-color);
+  color: white;
   border: 1px solid var(--primary-color);
-  border-radius: var(--radius);
+  border-radius: 0 var(--radius) var(--radius) 0;
   cursor: pointer;
-  font-size: 0.8rem;
-  transition: var(--transition);
+  font-size: 0.9rem; /* Increased from 0.85rem */
+  white-space: nowrap;
+  transition: background-color 0.3s;
 }
 
 .location-button:hover {
-  background-color: rgba(30, 136, 229, 0.1);
-  transform: translateY(-2px);
+  background-color: var(--primary-dark);
 }
 
 .dark-mode .location-button {
-  color: var(--accent-color);
-  border: 1px solid var(--accent-color);
+  background-color: var(--primary-dark);
+  border: 1px solid var(--primary-dark);
 }
 
-.dark-mode .location-button:hover {
-  background-color: rgba(255, 193, 7, 0.1);
+.location-button span {
+  display: none;
+}
+
+@media (min-width: 500px) {
+  .location-button span {
+    display: inline;
+  }
 }
 
 .location-icon {
@@ -607,16 +667,11 @@ body {
 }
 
 @keyframes pulse-location {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.15);
-  }
-  100% {
-    transform: scale(1);
-  }
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
 }
+
 /* Add these new animation styles to your existing CSS file */
 
 /* Weather icon animations */
